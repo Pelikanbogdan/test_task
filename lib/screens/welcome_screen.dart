@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_task/preferences_service.dart';
+import 'package:test_task/services/preferences_service.dart';
 import 'package:test_task/screens/main_screen.dart';
 import 'package:test_task/screens/unauthorized_screen.dart';
 
@@ -150,49 +150,6 @@ class WelcomeScreen extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class AuthTextField extends StatelessWidget {
-  final String hintText;
-  final Icon prefIcon;
-
-  AuthTextField({
-    required this.hintText,
-    required this.prefIcon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width * 0.35,
-      padding: EdgeInsets.all(10),
-      child: TextFormField(
-        obscureText: true,
-        validator: (value) {
-          if (value!.isNotEmpty && value.length > 2) {
-            return null;
-          } else {
-            return 'Please enter data';
-          }
-        },
-        decoration: InputDecoration(
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.blue.shade900,
-            ),
-          ),
-          fillColor: Colors.blue[900],
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Colors.blue[900],
-            fontWeight: FontWeight.bold,
-          ),
-          icon: prefIcon,
         ),
       ),
     );

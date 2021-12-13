@@ -7,7 +7,7 @@ import 'package:test_task/services/data_api.dart';
 import 'package:test_task/widgets/car_element.dart';
 import 'package:video_player/video_player.dart';
 
-import '../preferences_service.dart';
+import '../services/preferences_service.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -27,6 +27,7 @@ class _MainScreenState extends State<MainScreen> {
   int secondsPassed = 0;
   late Timer refreshTimer;
   late Timer secondsTimer;
+  List<Car> _originalCars = [];
   List<Car> _cars = [];
   final dataApi = DataApiController();
   String loginName = '';
@@ -42,8 +43,10 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     setUserName();
     dataApi.fetchCars().then((value) {
+      _originalCars.clear();
+      _originalCars.addAll(value);
       _cars.clear();
-      _cars.addAll(value);
+      _cars.addAll(_originalCars);
     });
     secondsTimer = Timer.periodic(
         Duration(seconds: 1),
@@ -55,14 +58,16 @@ class _MainScreenState extends State<MainScreen> {
         (Timer t) => setState(() {
               dataApi.fetchCars().then((value) {
                 secondsPassed = 0;
+                _originalCars.clear();
+                _originalCars.addAll(value);
                 _cars.clear();
-                _cars.addAll(value);
-                if (dropDownValue != 'No Filter') {
-                  _cars
-                      .removeWhere((element) => element.state != dropDownValue);
-                } else {
-                  return;
-                }
+                _cars.addAll(_originalCars.where((element) {
+                  if (dropDownValue != 'No Filter') {
+                    return element.state == dropDownValue;
+                  } else {
+                    return true;
+                  }
+                }));
               });
             }));
     _controller = VideoPlayerController.network(
@@ -94,25 +99,11 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Row(
           children: [
             Column(children: [
-              // Container(
-              //   height: 60,
-              //   width: size.width * 0.25,
-              //   color: Colors.blue[50],
-              //   child: Center(
-              //     child: Text(
-              //       'No Filter',
-              //       style: TextStyle(
-              //         fontSize: 20,
-              //         fontWeight: FontWeight.bold,
-              //         color: Colors.black,
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Container(
                 height: 60,
                 width: size.width * 0.25,
@@ -133,8 +124,19 @@ class _MainScreenState extends State<MainScreen> {
                         value: items,
                       );
                     }).toList(),
-                    onChanged: (String? newValue) =>
-                        setState(() => dropDownValue = newValue!),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropDownValue = newValue ?? 'No Filter';
+                        _cars.clear();
+                        _cars.addAll(_originalCars.where((element) {
+                          if (dropDownValue != 'No Filter') {
+                            return element.state == dropDownValue;
+                          } else {
+                            return true;
+                          }
+                        }));
+                      });
+                    },
                   ),
                 ),
               ),
@@ -162,52 +164,50 @@ class _MainScreenState extends State<MainScreen> {
             ),
             Column(
               children: [
-                Align(
-                  alignment: Alignment.topRight,
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: size.width * 0.73,
+                  height: 60,
+                  color: Colors.blue[50],
                   child: Container(
-                    alignment: Alignment.centerRight,
-                    width: size.width * 0.73,
+                    color: Colors.blue[900],
                     height: 60,
-                    color: Colors.blue[50],
-                    child: Container(
-                      color: Colors.blue[900],
-                      height: 60,
-                      width: size.width * 0.25,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
+                    width: size.width * 0.25,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Hello, ' + loginName,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: TextButton(
+                            onPressed: () {
+                              _preferencesService.saveLoginName('');
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (_) {
+                                  return WelcomeScreen();
+                                }),
+                              );
+                            },
                             child: Text(
-                              'Hello, ' + loginName,
+                              'log out',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25),
+                                  color: Colors.red[900],
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 20),
                             ),
                           ),
-                          TextButton(
-                            onPressed: () {},
-                            child: TextButton(
-                              onPressed: () {
-                                _preferencesService.saveLoginName('');
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) {
-                                    return WelcomeScreen();
-                                  }),
-                                );
-                              },
-                              child: Text(
-                                'log out',
-                                style: TextStyle(
-                                    color: Colors.red[900],
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 20),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   ),
                 ),

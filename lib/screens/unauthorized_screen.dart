@@ -7,19 +7,19 @@ class UnauthorizedScreen extends StatefulWidget {
 }
 
 class _UnauthorizedScreenState extends State<UnauthorizedScreen> {
-  late VideoPlayerController _controller;
+  late VideoPlayerController _firstVideoController;
   late VideoPlayerController _secondVideoController;
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
+    _firstVideoController = VideoPlayerController.network(
         'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
         videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true))
       ..addListener(() => setState(() {}))
       ..setLooping(true)
       ..setVolume(0)
-      ..initialize().then((_) => _controller.play());
+      ..initialize().then((_) => _firstVideoController.play());
     _secondVideoController = VideoPlayerController.network(
         'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
         videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true))
@@ -31,7 +31,7 @@ class _UnauthorizedScreenState extends State<UnauthorizedScreen> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _firstVideoController.dispose();
     _secondVideoController.dispose();
     super.dispose();
   }
@@ -41,6 +41,7 @@ class _UnauthorizedScreenState extends State<UnauthorizedScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -97,8 +98,9 @@ class _UnauthorizedScreenState extends State<UnauthorizedScreen> {
                           ),
                           Container(
                             child: AspectRatio(
-                                aspectRatio: _controller.value.aspectRatio,
-                                child: VideoPlayer(_controller)),
+                                aspectRatio:
+                                    _firstVideoController.value.aspectRatio,
+                                child: VideoPlayer(_firstVideoController)),
                             color: Colors.blue[100],
                             height: size.height * 0.5,
                             width: size.width * 0.48,
