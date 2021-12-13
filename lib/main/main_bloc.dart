@@ -14,7 +14,8 @@ abstract class MainEvent {}
 class CheckIfLoggedIn extends MainEvent {}
 
 class MainBloc extends Bloc<MainEvent, MainState> {
-  MainBloc() : super(InitialState()) {
+  final PreferencesService _preferencesService;
+  MainBloc(this._preferencesService) : super(InitialState()) {
     on<CheckIfLoggedIn>((event, emit) async {
       final loginName = await _preferencesService.getLoginName();
       await Future.delayed(Duration(seconds: 1), () {
@@ -26,5 +27,4 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       });
     });
   }
-  final PreferencesService _preferencesService = PreferencesService();
 }
