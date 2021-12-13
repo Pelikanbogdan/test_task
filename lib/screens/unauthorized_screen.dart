@@ -9,6 +9,8 @@ class UnauthorizedScreen extends StatefulWidget {
 class _UnauthorizedScreenState extends State<UnauthorizedScreen> {
   late VideoPlayerController _firstVideoController;
   late VideoPlayerController _secondVideoController;
+  bool isFirstVideoMuted = true;
+  bool isSecondVideoMuted = true;
 
   @override
   void initState() {
@@ -75,12 +77,25 @@ class _UnauthorizedScreenState extends State<UnauthorizedScreen> {
                                 ),
                                 Spacer(),
                                 IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.mic_sharp,
-                                    color: Colors.blue[100],
-                                    size: 35.0,
-                                  ),
+                                  onPressed: () {
+                                    if (isFirstVideoMuted) {
+                                      _firstVideoController.setVolume(1);
+                                      isFirstVideoMuted = false;
+                                      _secondVideoController.setVolume(0);
+                                      isSecondVideoMuted = true;
+                                    } else {
+                                      _firstVideoController.setVolume(0);
+                                      isFirstVideoMuted = true;
+                                    }
+                                  },
+                                  icon: isFirstVideoMuted
+                                      ? Icon(Icons.mic_off_sharp,
+                                          color: Colors.blue[100], size: 35.0)
+                                      : Icon(
+                                          Icons.mic_sharp,
+                                          color: Colors.blue[100],
+                                          size: 35.0,
+                                        ),
                                 ),
                                 IconButton(
                                   onPressed: () {},
@@ -124,12 +139,25 @@ class _UnauthorizedScreenState extends State<UnauthorizedScreen> {
                                 ),
                                 Spacer(),
                                 IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.mic_off,
-                                    color: Colors.blue[100],
-                                    size: 35.0,
-                                  ),
+                                  onPressed: () {
+                                    if (isSecondVideoMuted) {
+                                      _secondVideoController.setVolume(1);
+                                      isSecondVideoMuted = false;
+                                      _firstVideoController.setVolume(0);
+                                      isFirstVideoMuted = true;
+                                    } else {
+                                      _secondVideoController.setVolume(0);
+                                      isSecondVideoMuted = true;
+                                    }
+                                  },
+                                  icon: isSecondVideoMuted
+                                      ? Icon(Icons.mic_off_sharp,
+                                          color: Colors.blue[100], size: 35.0)
+                                      : Icon(
+                                          Icons.mic_sharp,
+                                          color: Colors.blue[100],
+                                          size: 35.0,
+                                        ),
                                 ),
                                 IconButton(
                                   onPressed: () {},

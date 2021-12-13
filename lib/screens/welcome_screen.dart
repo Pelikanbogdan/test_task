@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:test_task/services/preferences_service.dart';
 import 'package:test_task/screens/main_screen.dart';
 import 'package:test_task/screens/unauthorized_screen.dart';
+
+import '../services/preferences_service.dart';
 
 class WelcomeScreen extends StatelessWidget {
   final loginController = TextEditingController();

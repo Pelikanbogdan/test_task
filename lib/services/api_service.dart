@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:test_task/model/car.dart';
 
-class DataApiController {
+class ApiService {
   Future<List<Car>> fetchCars() async {
     final response = await http.get(Uri.parse(
         'http://filehost.feelsoftware.com/jsonplaceholder/cars-api.php'));

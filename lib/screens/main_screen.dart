@@ -3,11 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:test_task/model/car.dart';
 import 'package:test_task/screens/welcome_screen.dart';
-import 'package:test_task/services/data_api.dart';
+import 'package:test_task/services/api_service.dart';
+import 'package:test_task/services/preferences_service.dart';
 import 'package:test_task/widgets/car_element.dart';
 import 'package:video_player/video_player.dart';
-
-import '../services/preferences_service.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -29,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
   late Timer secondsTimer;
   List<Car> _originalCars = [];
   List<Car> _cars = [];
-  final dataApi = DataApiController();
+  final dataApi = ApiService();
   String loginName = '';
   final _preferencesService = PreferencesService();
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_task/screens/main_screen.dart';
-import 'package:test_task/services/preferences_service.dart';
+
 import '../screens/welcome_screen.dart';
-import 'main/main_bloc.dart';
+import 'main_bloc.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,8 +28,7 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
         ),
         home: BlocProvider<MainBloc>(
-          create: (context) =>
-              MainBloc(PreferencesService())..add(CheckIfLoggedIn()),
+          create: (context) => MainBloc()..add(CheckIfLoggedIn()),
           child: BlocBuilder<MainBloc, MainState>(
             builder: (context, state) {
               if (state is InitialState) {
