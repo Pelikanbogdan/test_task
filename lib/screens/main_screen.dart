@@ -91,6 +91,7 @@ class _MainScreenState extends State<MainScreen> {
     secondsTimer.cancel();
     _controller.dispose();
     _secondVideoController.dispose();
+    _preferencesService.saveLoginName('');
     super.dispose();
   }
 
@@ -140,8 +141,8 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
               Container(
-                height: size.height * 0.88,
-                width: 300,
+                height: size.height * 0.8,
+                width: size.width * 0.25,
                 color: Colors.white,
                 child: ListView.separated(
                   separatorBuilder: (context, index) {
@@ -161,178 +162,180 @@ class _MainScreenState extends State<MainScreen> {
               color: Colors.blue[100],
               thickness: 1.5,
             ),
-            Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerRight,
-                  width: size.width * 0.73,
-                  height: 60,
-                  color: Colors.blue[50],
-                  child: Container(
-                    color: Colors.blue[900],
+            Expanded(
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerRight,
+                    width: size.width * 0.73,
                     height: 60,
-                    width: size.width * 0.25,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Hello, ' + loginName,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: TextButton(
-                            onPressed: () {
-                              _preferencesService.saveLoginName('');
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (_) {
-                                  return WelcomeScreen();
-                                }),
-                              );
-                            },
+                    color: Colors.blue[50],
+                    child: Container(
+                      color: Colors.blue[900],
+                      height: 60,
+                      width: size.width * 0.25,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'log out',
+                              'Hello, ' + loginName,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  color: Colors.red[900],
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 20),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25),
                             ),
                           ),
-                        )
-                      ],
+                          TextButton(
+                            onPressed: () {},
+                            child: TextButton(
+                              onPressed: () {
+                                _preferencesService.saveLoginName('');
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (_) {
+                                    return WelcomeScreen();
+                                  }),
+                                );
+                              },
+                              child: Text(
+                                'log out',
+                                style: TextStyle(
+                                    color: Colors.red[900],
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 20),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 60,
-                              width: size.width * 0.35,
-                              color: Colors.blue[900],
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Text(
-                                      'Front Camera',
-                                      style: TextStyle(
-                                          color: Colors.blue[50],
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.mic_sharp,
-                                      color: Colors.blue[200],
-                                      size: 35.0,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.zoom_out_map,
-                                      color: Colors.blue[200],
-                                      size: 35.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              child: AspectRatio(
-                                  aspectRatio: _controller.value.aspectRatio,
-                                  child: VideoPlayer(_controller)),
-                              color: Colors.blue[100],
-                              height: size.height * 0.35,
-                              width: size.width * 0.35,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 60,
-                              width: size.width * 0.35,
-                              color: Colors.blue[900],
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Text(
-                                      'Back Camera',
-                                      style: TextStyle(
-                                          color: Colors.blue[50],
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Spacer(),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.mic_off,
-                                      color: Colors.blue[200],
-                                      size: 35.0,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.zoom_out_map,
-                                      color: Colors.blue[200],
-                                      size: 35.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              child: AspectRatio(
-                                  aspectRatio:
-                                      _secondVideoController.value.aspectRatio,
-                                  child: VideoPlayer(_secondVideoController)),
-                              color: Colors.blue[100],
-                              height: size.height * 0.35,
-                              width: size.width * 0.35,
-                            ),
-                            Spacer(),
-                            Text(
-                              'Data from API updated $secondsPassed seconds ago...',
-                              style: TextStyle(
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 60,
+                                width: size.width * 0.33,
                                 color: Colors.blue[900],
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: Text(
+                                        'Front Camera',
+                                        style: TextStyle(
+                                            color: Colors.blue[50],
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.mic_sharp,
+                                        color: Colors.blue[200],
+                                        size: 35.0,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.zoom_out_map,
+                                        color: Colors.blue[200],
+                                        size: 35.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                              Container(
+                                child: AspectRatio(
+                                    aspectRatio: _controller.value.aspectRatio,
+                                    child: VideoPlayer(_controller)),
+                                color: Colors.blue[100],
+                                height: size.height * 0.33,
+                                width: size.width * 0.33,
+                              ),
+                              Spacer(),
+                              Text(
+                                'Data from API updated $secondsPassed seconds ago...',
+                                style: TextStyle(
+                                  color: Colors.blue[900],
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 60,
+                                width: size.width * 0.33,
+                                color: Colors.blue[900],
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: Text(
+                                        'Back Camera',
+                                        style: TextStyle(
+                                            color: Colors.blue[50],
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.mic_off,
+                                        color: Colors.blue[200],
+                                        size: 35.0,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.zoom_out_map,
+                                        color: Colors.blue[200],
+                                        size: 35.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: AspectRatio(
+                                    aspectRatio: _secondVideoController
+                                        .value.aspectRatio,
+                                    child: VideoPlayer(_secondVideoController)),
+                                color: Colors.blue[100],
+                                height: size.height * 0.33,
+                                width: size.width * 0.33,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),

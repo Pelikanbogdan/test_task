@@ -50,7 +50,9 @@ class WelcomeScreen extends StatelessWidget {
                   child: TextFormField(
                     controller: loginController,
                     validator: (value) {
-                      if (value!.isNotEmpty && value.length > 2) {
+                      if (value!.isNotEmpty &&
+                          value.length > 2 &&
+                          value.length < 10) {
                         return null;
                       } else {
                         return 'Please enter data';
